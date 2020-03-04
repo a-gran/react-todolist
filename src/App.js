@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import TodoList from "./TodoList";
 import AddNewItemForm from "./AddNewItemForm";
+import { connect } from "react-redux"
 
 class App extends React.Component {
 
@@ -15,15 +16,12 @@ class App extends React.Component {
 
         let newTodoList = {
             id: this.nextTodoListId,
-            title: title
+            title: title,
+            tasks: []
         }
 
-        this.setState({todolists: [...this.state.todolists, newTodoList]}, () => {
-            this.saveState();
-        });
-
-        this.nextTodoListId++;
-
+        this.props.addTodolist(newTodoList)
+        this.nextTodoListId++
 
     }
 
@@ -60,9 +58,9 @@ class App extends React.Component {
     }
 
     render = () => {
-        const todolists = this.state
+        const todolists = this.props
             .todolists
-            .map(tl => <TodoList id={tl.id} title={tl.title}/>)
+            .map(tl => <TodoList id={tl.id} title={tl.title} tasks={tl.tasks} />)
 
         return (
             <>
@@ -77,5 +75,27 @@ class App extends React.Component {
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        todolists: state.todolists
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTodolist: (newTodolist) => {
+            const action = {
+                type: "ADD-TODOLIST",
+                newTodolist: newTodolist
+            };
+ 
+            dispatch(action)
+        }
+    }
+ }
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default ConnectedApp;
+
 

@@ -76,7 +76,7 @@ class TodoList extends React.Component {
     changeTask = (taskId, obj) => {
         debugger
         let newTasks = this.state.tasks.map(t => {
-            if (t.id != taskId) {
+            if (t.id !== taskId) {
                 return t;
             }
             else {
@@ -107,7 +107,7 @@ class TodoList extends React.Component {
 
                     <TodoListTasks changeStatus={this.changeStatus }
                                    changeTitle={this.changeTitle }
-                                   tasks={this.state.tasks.filter(t => {
+                                   tasks={this.props.tasks.filter(t => {
                         if (this.state.filterValue === "All") {
                             return true;
                         }
